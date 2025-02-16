@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../../core/services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +17,11 @@ export class RegisterComponent implements OnInit {
   hidePassword = true;
   hideConfirmPassword = true;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -39,8 +45,18 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
+    if (this.registerForm.value) {
+      const { name, email, password } = this.registerForm.value;
+      
+      this.userService.register({ name, email, password }).subscribe({
+        next: (response) => {
+          alert('Registration successful!');
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          alert(error.message);
+        }
+      });
     }
   }
 }

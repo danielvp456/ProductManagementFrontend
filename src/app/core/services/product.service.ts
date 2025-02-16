@@ -3,38 +3,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { RegisterRequest, RegisterResponse } from '../interfaces/auth.interface';
-import { UpdateUserRequest, User } from '../interfaces/user.interface';
+import { Product } from '../interfaces/product.interface';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class ProductService {
   private readonly baseUrl = environment.apiUrl;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
 
-  updateUser(userId: string, userData: UpdateUserRequest): Observable<User> {
+  getAllProducts(): Observable<Product[]> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.put<User>(
-      `${this.baseUrl}/users/${userId}`,
-      userData,
-      { headers }
-    ).pipe(
-      catchError(this.handleError)
-    );
-  }
-
-  register(userData: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(
-      `${this.baseUrl}/users/register`,
-      userData
-    ).pipe(
+    return this.http.get<Product[]>(`${this.baseUrl}/products`, { headers }).pipe(
       catchError(this.handleError)
     );
   }

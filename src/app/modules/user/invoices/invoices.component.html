@@ -1,0 +1,51 @@
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Purchase History</h1>
+
+    @if (invoices.length) {
+      <div class="space-y-4">
+        @for (invoice of invoices; track $index) {
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">
+                  Order by {{invoice.user.name}}
+                </h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                  {{invoice.purchaseDate | date:'medium'}}
+                </p>
+              </div>
+            </div>
+
+            <div class="border-t border-gray-200 pt-4">
+              @for (item of invoice.products; track $index) {
+                <div class="flex justify-between items-center py-2">
+                  <div>
+                    <span class="text-gray-800 dark:text-white">{{item.product.name}}</span>
+                    <span class="text-gray-600 dark:text-gray-300 ml-2">
+                      x{{item.quantity}}
+                    </span>
+                  </div>
+                  <span class="text-gray-800 dark:text-white">
+                    ${{item.unitPrice * item.quantity}}
+                  </span>
+                </div>
+              }
+            </div>
+
+            <div class="border-t border-gray-200 mt-4 pt-4">
+              <div class="flex justify-between items-center">
+                <span class="font-semibold text-gray-800 dark:text-white">Total</span>
+                <span class="font-semibold text-gray-800 dark:text-white">
+                  ${{invoice.total}}
+                </span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="text-center py-12">
+        <p class="text-gray-600 dark:text-gray-300">No purchase history available</p>
+      </div>
+    }
+  </div>

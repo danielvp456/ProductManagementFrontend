@@ -37,7 +37,9 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('user', JSON.stringify(response.user));
-          this.router.navigate(['/']);
+          if(response.user.role === 'user'){
+            this.router.navigate(['/user/products']);
+          }
         },
         error: (error) => {
           alert(error.message);

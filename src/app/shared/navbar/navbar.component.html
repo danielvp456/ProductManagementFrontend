@@ -6,8 +6,66 @@
           ProductManagement
         </span>
       </div>
-      <div class="flex items-center space-x-4">
-        
+      <div class="hidden md:flex items-center space-x-4">
+        <ng-container *ngIf="isLoggedIn">
+          <a routerLink="/user/products" routerLinkActive="text-indigo-600" 
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Products
+          </a>
+          <a routerLink="/user/cart" routerLinkActive="text-indigo-600"
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Cart
+          </a>
+          <a routerLink="/user/invoices" routerLinkActive="text-indigo-600"
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Invoices
+          </a>
+          <a routerLink="/user/profile" routerLinkActive="text-indigo-600"
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Profile
+          </a>
+          <button (click)="logout()" 
+                  class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Logout
+          </button>
+        </ng-container>
+      </div>
+      
+      <!-- Menú móvil -->
+      <div class="md:hidden flex items-center">
+        <button (click)="toggleMobileMenu()" class="text-gray-700 dark:text-gray-300">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Menú móvil expandido -->
+    <div class="md:hidden" *ngIf="isMobileMenuOpen">
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <ng-container *ngIf="isLoggedIn">
+          <a routerLink="/user/products" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Products
+          </a>
+          <a routerLink="/user/cart" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Cart
+          </a>
+          <a routerLink="/user/invoices" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Invoices
+          </a>
+          <a routerLink="/user/profile" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Profile
+          </a>
+          <button (click)="logout()"
+                  class="block w-full text-left text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Logout
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>

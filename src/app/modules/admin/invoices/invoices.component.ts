@@ -23,7 +23,7 @@ export class InvoicesComponent implements OnInit {
   mockInvoices: InvoiceResponse[] = [
     {
       user: {
-        id: '1',
+        _id: '1',
         name: 'John Doe',
         email: 'john@example.com',
         role: 'user'

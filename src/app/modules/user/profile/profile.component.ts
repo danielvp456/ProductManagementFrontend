@@ -56,12 +56,12 @@ export class ProfileComponent implements OnInit {
       ...(this.newPassword ? { password: this.newPassword } : {})
     };
 
-    this.userService.updateUser(this.userProfile.id, updateData).subscribe({
+    this.userService.updateUser(this.userProfile._id, updateData).subscribe({
       next: (updatedUser) => {
         // Mantener el ID del usuario al actualizar
         const updatedUserWithId = {
           ...updatedUser,
-          id: this.userProfile.id // Aseguramos que el ID se mantiene
+          id: this.userProfile._id // Aseguramos que el ID se mantiene
         };
         
         // Actualizar el localStorage con el usuario completo

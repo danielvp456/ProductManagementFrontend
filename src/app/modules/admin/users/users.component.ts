@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../../core/interfaces/user.interface';
 import { UserModalComponent } from './user-modal/user-modal.component';
+import { UserService } from '../../../core/services/user.service';
+import { RegisterRequest } from '../../../core/interfaces/auth.interface';
+import { ApiError } from '../../../core/interfaces/error.interface';
 
 @Component({
   selector: 'app-users',
@@ -15,25 +18,31 @@ export class UsersComponent implements OnInit {
   searchTerm: string = '';
   showModal = false;
   selectedUser: User | null = null;
+  isLoading = false;
+  error: string | null = null;
+  successMessage: string | null = null;
 
-  // Datos de ejemplo (después se reemplazarán con datos del backend)
-  mockUsers: User[] = [
-    {
-      id: '1',
-      name: 'John Admin',
-      email: 'john@admin.com',
-      role: 'admin'
-    },
-    {
-      id: '2',
-      name: 'Jane User',
-      email: 'jane@user.com',
-      role: 'user'
-    }
-  ];
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.users = this.mockUsers;
+    this.loadUsers();
+  }
+
+  loadUsers(): void {
+    this.isLoading = true;
+    this.error = null;
+    
+    this.userService.getAllUsers().subscribe({
+      next: (users) => {
+        this.users = users;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.error = 'Error loading users. Please try again later.';
+        this.isLoading = false;
+        console.error('Error loading users:', error);
+      }
+    });
   }
 
   get filteredUsers(): User[] {
@@ -44,6 +53,8 @@ export class UsersComponent implements OnInit {
   }
 
   openModal(user: User | null = null): void {
+    console.log("Im opening modal");
+    console.log(user);
     this.selectedUser = user;
     this.showModal = true;
   }
@@ -53,27 +64,69 @@ export class UsersComponent implements OnInit {
     this.selectedUser = null;
   }
 
-  onUserSaved(user: User): void {
-    if (user.id) {
-      // Actualizar usuario existente
-      this.users = this.users.map(u => u.id === user.id ? user : u);
+  showMessage(message: string, isError: boolean = false) {
+    if (isError) {
+      this.error = message;
+      this.successMessage = null;
     } else {
-      // Crear nuevo usuario
-      const newUser = {
-        ...user
-      };
-      this.users.push(newUser);
+      this.successMessage = message;
+      this.error = null;
     }
-    this.closeModal();
+    setTimeout(() => {
+      this.error = null;
+      this.successMessage = null;
+    }, 3000);
+  }
+
+  onUserSaved(userData: any): void {
+    if (userData.id) {
+      const updateData = {
+        name: userData.name,
+        email: userData.email,
+        role: userData.role,
+        password: userData.password
+      };
+      
+      this.userService.updateUser(userData.id, updateData).subscribe({
+        next: (updatedUser) => {
+          this.users = this.users.map(u => u._id === updatedUser._id ? updatedUser : u);
+          this.closeModal();
+          this.showMessage('User updated successfully');
+        },
+        error: (error: ApiError) => this.showMessage(error.message, true)
+      });
+    } else {
+      const createData = {
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+        role: userData.role
+      };
+      
+      this.userService.createUser(createData).subscribe({
+        next: () => {
+          this.loadUsers();
+          this.closeModal();
+          this.showMessage('User created successfully');
+        },
+        error: (error: ApiError) => this.showMessage(error.message, true)
+      });
+    }
   }
 
   onDeleteUser(userId: string): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-      this.users = this.users.filter(user => user.id !== userId);
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.userService.deleteUser(userId).subscribe({
+        next: () => {
+          this.users = this.users.filter(user => user._id !== userId);
+          this.showMessage('User deleted successfully');
+        },
+        error: (error: ApiError) => this.showMessage(error.message, true)
+      });
     }
   }
 
   toggleUserStatus(user: User): void {
-    this.users = this.users.map(u => u.id === user.id ? user : u);
+    this.users = this.users.map(u => u._id === user._id ? user : u);
   }
 } 

@@ -34,8 +34,6 @@ export class ProductsComponent implements OnInit {
           image: product.image,
           status: product.status
         }));
-        console.log('Products:', products);
-        console.log('MY Products:', this.products);
       },
       error: (error) => {
         console.error('Error loading products:', error);
@@ -56,5 +54,6 @@ export class ProductsComponent implements OnInit {
     };
     
     this.cartService.addToCart(productToAdd);
+    alert(`${product.name} has been added to your cart`);
   }
 } 

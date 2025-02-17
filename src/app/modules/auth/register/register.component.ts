@@ -37,26 +37,27 @@ export class RegisterComponent implements OnInit {
       const password = control.get('password');
       const confirmPassword = control.get('confirmPassword');
 
-      if (password?.value !== confirmPassword?.value) {
-        return { passwordMismatch: true };
-      }
-      return null;
+      return password?.value !== confirmPassword?.value ? { passwordMismatch: true } : null;
     };
   }
 
   onSubmit() {
-    if (this.registerForm.value) {
-      const { name, email, password } = this.registerForm.value;
-      
-      this.userService.register({ name, email, password }).subscribe({
-        next: (response) => {
-          alert('Registration successful!');
-          this.router.navigate(['/login']);
-        },
-        error: (error) => {
-          alert(error.message);
-        }
-      });
+    if (this.registerForm.invalid) {
+      Object.values(this.registerForm.controls).forEach(control => control.markAsTouched());
+      alert('Please fix the errors in the form before submitting.');
+      return;
     }
+
+    const { name, email, password } = this.registerForm.value;
+
+    this.userService.register({ name, email, password }).subscribe({
+      next: () => {
+        alert('Registration successful!');
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        alert(error.message);
+      }
+    });
   }
 }

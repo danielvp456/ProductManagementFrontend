@@ -53,8 +53,6 @@ export class UsersComponent implements OnInit {
   }
 
   openModal(user: User | null = null): void {
-    console.log("Im opening modal");
-    console.log(user);
     this.selectedUser = user;
     this.showModal = true;
   }

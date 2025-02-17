@@ -3,12 +3,12 @@
       <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">User Profile</h1>
 
       <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <!-- Avatar Section -->
+        <!-- Avatar Section con Iniciales -->
         <div class="flex justify-center mb-6">
           <div class="relative">
-            <img [src]="'assets/default-avatar.png'"
-                 alt="Profile picture"
-                 class="w-32 h-32 rounded-full object-cover">
+            <div [class]="'w-32 h-32 rounded-full flex items-center justify-center text-3xl font-bold text-white ' + getRandomColor()">
+              {{getInitials()}}
+            </div>
           </div>
         </div>
 

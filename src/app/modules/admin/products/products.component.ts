@@ -148,7 +148,6 @@ export class ProductsComponent implements OnInit {
       next: (updatedProduct) => {
         this.products = this.products.map(p => p._id === product._id ? updatedProduct : p);
         this.isLoading = false;
-        alert('Product status updated successfully');
       },
       error: (error) => {
         this.error = 'Error updating product status. Please try again.';
@@ -176,7 +175,6 @@ export class ProductsComponent implements OnInit {
         next: (updatedProduct) => {
           this.products = this.products.map(p => p._id === product._id ? updatedProduct : p);
           this.isLoading = false;
-          alert('Product stock updated successfully');
         },
         error: (error) => {
           this.error = 'Error updating product stock. Please try again.';

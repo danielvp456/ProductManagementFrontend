@@ -4,6 +4,7 @@ import { CartItem } from '../../../core/interfaces/product.interface';
 import { CartService } from '../../../core/services/cart.service';
 import { InvoiceService } from '../../../core/services/invoice.service';
 import { Router } from '@angular/router';
+import { ApiError } from '../../../core/interfaces/error.interface';
 
 @Component({
   selector: 'app-cart',
@@ -50,12 +51,21 @@ export class CartComponent implements OnInit {
     this.invoiceService.createInvoice({ items }).subscribe({
       next: (response) => {
         this.cartService.clearCart();
-        // Aquí podrías redirigir a una página de confirmación
         this.router.navigate(['/invoice-success']);
       },
-      error: (error) => {
+      error: (error: ApiError) => {
         console.error('Error creating invoice:', error);
-        // Aquí podrías mostrar un mensaje de error al usuario
+        let errorMessage = 'An error occurred while processing your order.';
+        
+        if (error.message) {
+          // Si el error viene en el formato de ApiError
+          errorMessage = error.message;
+        } else if (typeof error === 'string') {
+          // Si el error es una cadena simple
+          errorMessage = error;
+        }
+        
+        alert(`Error: ${errorMessage}`);
       }
     });
   }

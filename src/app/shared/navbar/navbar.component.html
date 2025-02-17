@@ -34,8 +34,12 @@
             Products
           </a>
           <a routerLink="/user/cart" routerLinkActive="text-indigo-600"
-             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium relative">
             Cart
+            <span *ngIf="cartItemCount > 0"
+                  class="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              {{cartItemCount}}
+            </span>
           </a>
           <a routerLink="/user/invoices" routerLinkActive="text-indigo-600"
              class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
@@ -93,8 +97,12 @@
             Products
           </a>
           <a routerLink="/user/cart" routerLinkActive="text-indigo-600"
-             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium relative">
             Cart
+            <span *ngIf="cartItemCount > 0"
+                  class="absolute top-2 ml-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              {{cartItemCount}}
+            </span>
           </a>
           <a routerLink="/user/invoices" routerLinkActive="text-indigo-600"
              class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">

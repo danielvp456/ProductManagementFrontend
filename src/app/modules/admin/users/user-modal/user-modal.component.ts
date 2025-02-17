@@ -19,7 +19,6 @@ export class UserModalComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    console.log('User in modal:', this.user);
     this.initForm();
   }
 
@@ -41,7 +40,6 @@ export class UserModalComponent implements OnInit {
     
     if (this.userForm.valid) {
       const formData = this.userForm.value;
-      console.log('Form data before emit:', formData);
       this.save.emit(formData);
     }
   }

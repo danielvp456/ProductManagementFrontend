@@ -3,6 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { UserStateService } from '../../core/services/user-state.service';
+import { CartService } from '../../core/services/cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,12 +15,17 @@ import { UserStateService } from '../../core/services/user-state.service';
 export class NavbarComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   private userStateService = inject(UserStateService);
+  private cartService = inject(CartService);
   isMobileMenuOpen = false;
   userRole: string = '';
+  cartItemCount: number = 0;
 
   constructor(private router: Router) {
     this.userStateService.userRole$.subscribe(role => {
       this.userRole = role;
+    });
+    this.cartService.getCartItems().subscribe(items => {
+      this.cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
     });
   }
 

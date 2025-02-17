@@ -1,18 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CartItem, Product } from '../interfaces/product.interface';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private cartItems = new BehaviorSubject<CartItem[]>([]);
+  private platformId = inject(PLATFORM_ID);
   
   constructor() {
-    // Cargar carrito del localStorage al iniciar
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      this.cartItems.next(JSON.parse(savedCart));
+    if (isPlatformBrowser(this.platformId)) {
+      // Cargar carrito del localStorage solo si estamos en el navegador
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        this.cartItems.next(JSON.parse(savedCart));
+      }
     }
   }
 
@@ -58,10 +62,14 @@ export class CartService {
 
   clearCart(): void {
     this.cartItems.next([]);
-    localStorage.removeItem('cart');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('cart');
+    }
   }
 
   private saveToLocalStorage(): void {
-    localStorage.setItem('cart', JSON.stringify(this.cartItems.value));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('cart', JSON.stringify(this.cartItems.value));
+    }
   }
 } 

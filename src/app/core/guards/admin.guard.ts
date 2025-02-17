@@ -5,7 +5,7 @@ import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   private platformId = inject(PLATFORM_ID);
   
   constructor(private router: Router) {}
@@ -13,14 +13,12 @@ export class AuthGuard implements CanActivate {
   canActivate(): boolean {
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('user');
-      if (user) {
-        const userObj = JSON.parse(user);
-        // Si es admin, redirigir al dashboard de admin
-        if (userObj.role === 'admin') {
-          this.router.navigate(['/admin/dashboard']);
-          return false;
-        }
+      if (user && JSON.parse(user).role === 'admin') {
         return true;
+      }
+      if (user) {
+        this.router.navigate(['/products']);
+        return false;
       }
     }
     

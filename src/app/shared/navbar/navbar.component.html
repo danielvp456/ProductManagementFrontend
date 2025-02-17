@@ -7,7 +7,32 @@
         </span>
       </div>
       <div class="hidden md:flex items-center space-x-4">
-        <ng-container *ngIf="isLoggedIn">
+        <!-- Admin Navigation -->
+        <ng-container *ngIf="isLoggedIn && isAdmin">
+          <a routerLink="/admin/dashboard" routerLinkActive="text-indigo-600" 
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Dashboard
+          </a>
+          <a routerLink="/admin/users" routerLinkActive="text-indigo-600"
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Users
+          </a>
+          <a routerLink="/admin/products" routerLinkActive="text-indigo-600"
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Products
+          </a>
+          <a routerLink="/admin/invoices" routerLinkActive="text-indigo-600"
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Invoices
+          </a>
+          <a routerLink="/admin/reports" routerLinkActive="text-indigo-600"
+             class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+            Reports
+          </a>
+        </ng-container>
+
+        <!-- User Navigation -->
+        <ng-container *ngIf="isLoggedIn && !isAdmin">
           <a routerLink="/user/products" routerLinkActive="text-indigo-600" 
              class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
             Products
@@ -24,11 +49,12 @@
              class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
             Profile
           </a>
-          <button (click)="logout()" 
-                  class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
-            Logout
-          </button>
         </ng-container>
+
+        <button *ngIf="isLoggedIn" (click)="logout()" 
+                class="text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">
+          Logout
+        </button>
       </div>
       
       <!-- Menú móvil -->
@@ -44,7 +70,32 @@
     <!-- Menú móvil expandido -->
     <div class="md:hidden" *ngIf="isMobileMenuOpen">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <ng-container *ngIf="isLoggedIn">
+        <!-- Admin Mobile Navigation -->
+        <ng-container *ngIf="isLoggedIn && isAdmin">
+          <a routerLink="/admin/dashboard" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Dashboard
+          </a>
+          <a routerLink="/admin/users" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Users
+          </a>
+          <a routerLink="/admin/products" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Products
+          </a>
+          <a routerLink="/admin/invoices" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Invoices
+          </a>
+          <a routerLink="/admin/reports" routerLinkActive="text-indigo-600"
+             class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
+            Reports
+          </a>
+        </ng-container>
+
+        <!-- User Mobile Navigation -->
+        <ng-container *ngIf="isLoggedIn && !isAdmin">
           <a routerLink="/user/products" routerLinkActive="text-indigo-600"
              class="block text-gray-700 dark:text-gray-300 hover:text-indigo-600 px-3 py-2 rounded-md text-base font-medium">
             Products

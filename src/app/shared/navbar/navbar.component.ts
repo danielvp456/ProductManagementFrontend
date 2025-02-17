@@ -13,14 +13,26 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   private platformId = inject(PLATFORM_ID);
   isMobileMenuOpen = false;
+  userRole: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    if (isPlatformBrowser(this.platformId)) {
+      const user = localStorage.getItem('user');
+      if (user) {
+        this.userRole = JSON.parse(user).role;
+      }
+    }
+  }
 
   get isLoggedIn(): boolean {
     if (isPlatformBrowser(this.platformId)) {
       return !!localStorage.getItem('user');
     }
     return false;
+  }
+
+  get isAdmin(): boolean {
+    return this.userRole === 'admin';
   }
 
   toggleMobileMenu() {

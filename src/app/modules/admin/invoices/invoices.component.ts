@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InvoiceResponse } from '../../../core/interfaces/invoice.interface';
 import { InvoiceDetailsModalComponent } from './invoice-details-modal/invoice-details-modal.component';
+import { InvoiceService } from '../../../core/services/invoice.service';
 
 @Component({
   selector: 'app-invoices',
@@ -18,36 +19,30 @@ export class InvoicesComponent implements OnInit {
   selectedInvoice: InvoiceResponse | null = null;
   startDate: string = '';
   endDate: string = '';
+  isLoading = false;
+  error: string | null = null;
 
-  // Datos de ejemplo (después se reemplazarán con datos del backend)
-  mockInvoices: InvoiceResponse[] = [
-    {
-      user: {
-        _id: '1',
-        name: 'John Doe',
-        email: 'john@example.com',
-        role: 'user'
-      },
-      products: [
-        {
-          product: {
-            name: 'Gaming Laptop',
-            description: 'High-performance gaming laptop',
-            price: 1299.99,
-            stock: 10,
-            status: 'active'
-          },
-          quantity: 1,
-          unitPrice: 1299.99
-        }
-      ],
-      total: 1299.99,
-      purchaseDate: '2024-01-15'
-    }
-  ];
+  constructor(private invoiceService: InvoiceService) {}
 
   ngOnInit(): void {
-    this.invoices = this.mockInvoices;
+    this.loadInvoices();
+  }
+
+  loadInvoices(): void {
+    this.isLoading = true;
+    this.error = null;
+
+    this.invoiceService.getAllInvoices().subscribe({
+      next: (invoices) => {
+        this.invoices = invoices;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.error = 'Error al cargar las facturas. Por favor, intente nuevamente.';
+        this.isLoading = false;
+        console.error('Error loading invoices:', error);
+      }
+    });
   }
 
   get filteredInvoices(): InvoiceResponse[] {

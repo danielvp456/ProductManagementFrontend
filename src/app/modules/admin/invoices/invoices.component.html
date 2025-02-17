@@ -1,8 +1,17 @@
 <div class="p-6">
   <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Invoices Management</h1>
 
+  <!-- Estado de carga y error -->
+  <div *ngIf="isLoading" class="text-center py-4">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
+  </div>
+
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+    <span class="block sm:inline">{{ error }}</span>
+  </div>
+
   <!-- Filtros -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div *ngIf="!isLoading && !error" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
     <!-- Búsqueda -->
     <div>
       <input type="text"
@@ -35,7 +44,7 @@
   </div>
 
   <!-- Tabla de facturas -->
-  <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+  <div *ngIf="!isLoading && !error && filteredInvoices.length > 0" class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
       <thead class="bg-gray-50 dark:bg-gray-700">
         <tr>
@@ -87,6 +96,11 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Mensaje cuando no hay facturas -->
+  <div *ngIf="!isLoading && !error && filteredInvoices.length === 0" class="text-center py-8">
+    <p class="text-gray-500 dark:text-gray-400">No se encontraron facturas</p>
   </div>
 
   <!-- Modal de detalles de factura -->

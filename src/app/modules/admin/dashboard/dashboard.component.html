@@ -1,105 +1,118 @@
 <div class="p-6">
   <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Admin Dashboard</h1>
 
-  <!-- Estadísticas -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <!-- Total Users -->
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Total Users</p>
-          <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{statistics.totalUsers}}</p>
-        </div>
-        <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center">
-          <span class="text-2xl">👥</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Products -->
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Total Products</p>
-          <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{statistics.totalProducts}}</p>
-        </div>
-        <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-          <span class="text-2xl">📦</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Sales -->
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Total Sales</p>
-          <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{statistics.totalSales}}</p>
-        </div>
-        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-          <span class="text-2xl">📊</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Revenue -->
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Revenue</p>
-          <p class="text-2xl font-semibold text-gray-800 dark:text-white">${{statistics.revenue}}</p>
-        </div>
-        <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
-          <span class="text-2xl">💰</span>
-        </div>
-      </div>
-    </div>
+  <!-- Estado de carga -->
+  <div *ngIf="isLoading" class="text-center py-4">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500 mx-auto"></div>
   </div>
 
-  <!-- Accesos Rápidos -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-    <a routerLink="/admin/users" 
-       class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Users</h2>
-      <p class="text-gray-600 dark:text-gray-300 mb-4">Manage system users</p>
-      <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Users →</span>
-    </a>
-
-    <a routerLink="/admin/products" 
-       class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Products</h2>
-      <p class="text-gray-600 dark:text-gray-300 mb-4">Manage product inventory</p>
-      <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Products →</span>
-    </a>
-
-    <a routerLink="/admin/invoices" 
-       class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Invoices</h2>
-      <p class="text-gray-600 dark:text-gray-300 mb-4">View all transactions</p>
-      <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Invoices →</span>
-    </a>
-
-    <a routerLink="/admin/reports" 
-       class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Reports</h2>
-      <p class="text-gray-600 dark:text-gray-300 mb-4">Analytics and statistics</p>
-      <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Reports →</span>
-    </a>
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+    <span class="block sm:inline">{{ error }}</span>
   </div>
 
-  <!-- Actividad Reciente -->
-  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-    <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Recent Activity</h2>
-    <div class="space-y-4">
-      <div *ngFor="let activity of recentActivities" 
-           class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4 last:border-0">
-        <div class="flex items-center space-x-4">
-          <div [class]="'w-10 h-10 rounded-full flex items-center justify-center ' + activity.iconBg">
-            <span [class]="activity.iconColor">{{activity.icon}}</span>
-          </div>
+  <!-- Contenido del dashboard -->
+  <div *ngIf="!isLoading && !error">
+    <!-- Estadísticas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <!-- Total Users -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-800 dark:text-white">{{activity.description}}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{activity.time}}</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Total Users</p>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{statistics.totalUsers}}</p>
+          </div>
+          <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center">
+            <span class="text-2xl">👥</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Products -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Total Products</p>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{statistics.totalProducts}}</p>
+          </div>
+          <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+            <span class="text-2xl">📦</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Sales -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Total Sales</p>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-white">{{statistics.totalSales}}</p>
+          </div>
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+            <span class="text-2xl">📊</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue -->
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Revenue</p>
+            <p class="text-2xl font-semibold text-gray-800 dark:text-white">${{statistics.revenue}}</p>
+          </div>
+          <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
+            <span class="text-2xl">💰</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accesos Rápidos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <a routerLink="/admin/users" 
+         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Users</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Manage system users</p>
+        <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Users →</span>
+      </a>
+
+      <a routerLink="/admin/products" 
+         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Products</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Manage product inventory</p>
+        <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Products →</span>
+      </a>
+
+      <a routerLink="/admin/invoices" 
+         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Invoices</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">View all transactions</p>
+        <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Invoices →</span>
+      </a>
+
+      <a routerLink="/admin/reports" 
+         class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Reports</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-4">Analytics and statistics</p>
+        <span class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">View Reports →</span>
+      </a>
+    </div>
+
+    <!-- Actividad Reciente -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Recent Activity</h2>
+      <div class="space-y-4">
+        <div *ngFor="let activity of recentActivities" 
+             class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4 last:border-0">
+          <div class="flex items-center space-x-4">
+            <div [class]="'w-10 h-10 rounded-full flex items-center justify-center ' + activity.iconBg">
+              <span [class]="activity.iconColor">{{activity.icon}}</span>
+            </div>
+            <div>
+              <p class="text-gray-800 dark:text-white">{{activity.description}}</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{{activity.time}}</p>
+            </div>
           </div>
         </div>
       </div>

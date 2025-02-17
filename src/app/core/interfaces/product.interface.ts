@@ -1,3 +1,6 @@
+import { User } from "./user.interface";
+import { InvoiceProduct } from "./invoice.interface";
+
 export interface Product {
   _id: string;
   name: string;
@@ -13,9 +16,11 @@ export interface CartItem extends Product {
 }
 
 export interface Invoice {
-  id: string;
-  date: Date;
-  items: CartItem[];
+  _id: string;
+  user: User;
+  products: InvoiceProduct[];
   total: number;
-  status: 'pending' | 'completed' | 'cancelled';
+  purchaseDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 } 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { UserStateService } from '../../../core/services/user-state.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private userStateService: UserStateService
   ) {}
 
   ngOnInit() {
@@ -37,6 +39,8 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('user', JSON.stringify(response.user));
+          this.userStateService.updateUserRole(response.user.role);
+          
           if(response.user.role === 'admin') {
             this.router.navigate(['/admin/dashboard']);
           }

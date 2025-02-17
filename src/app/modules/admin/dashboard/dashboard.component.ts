@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
     // Tomar las 3 más recientes
     this.recentActivities = sortedInvoices.slice(0, 3).map(invoice => ({
       type: 'sale',
-      description: `Venta a ${invoice.user.name} por $${invoice.total.toFixed(2)}`,
+      description: `Sale to ${invoice.user.name} for $${invoice.total.toFixed(2)}`,
       time: this.getTimeAgo(new Date(invoice.purchaseDate)),
       icon: '💰',
       iconBg: 'bg-green-100 dark:bg-green-900',
@@ -86,13 +86,13 @@ export class DashboardComponent implements OnInit {
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
 
     if (diffInMinutes < 60) {
-      return `${diffInMinutes} minutos atrás`;
+      return `${diffInMinutes} minutes ago`;
     } else if (diffInMinutes < 1440) {
       const hours = Math.floor(diffInMinutes / 60);
-      return `${hours} horas atrás`;
+      return `${hours} hours ago`;
     } else {
       const days = Math.floor(diffInMinutes / 1440);
-      return `${days} días atrás`;
+      return `${days} days ago`;
     }
   }
 } 

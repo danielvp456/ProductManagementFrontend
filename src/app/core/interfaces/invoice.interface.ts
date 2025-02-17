@@ -2,6 +2,7 @@ import { User } from "./user.interface";
 
 export interface InvoiceProduct {
   product: {
+    _id: string;
     name: string;
     description: string;
     price: number;
@@ -13,8 +14,11 @@ export interface InvoiceProduct {
 }
 
 export interface InvoiceResponse {
+  _id: string;
   user: User;
   products: InvoiceProduct[];
   total: number;
   purchaseDate: string;
+  createdAt: string;
+  updatedAt: string;
 } 

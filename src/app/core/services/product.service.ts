@@ -26,5 +26,32 @@ export class ProductService {
     );
   }
 
+  createProduct(product: Omit<Product, '_id'>): Observable<Product> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<Product>(`${this.baseUrl}/products`, product, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteProduct(productId: string): Observable<void> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.delete<void>(`${this.baseUrl}/products/${productId}`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateProduct(productId: string, product: Omit<Product, '_id'>): Observable<Product> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.put<Product>(`${this.baseUrl}/products/${productId}`, product, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError = AuthService.prototype.handleError;
 } 

@@ -15,7 +15,6 @@ export class ProductModalComponent implements OnInit {
   @Output() save = new EventEmitter<Product>();
 
   productForm!: FormGroup;
-  categories = ['Electronics', 'Accessories', 'Clothing', 'Books', 'Other'];
 
   constructor(private fb: FormBuilder) {}
 
@@ -24,15 +23,23 @@ export class ProductModalComponent implements OnInit {
       name: [this.product?.name || '', [Validators.required]],
       description: [this.product?.description || '', [Validators.required]],
       price: [this.product?.price || 0, [Validators.required, Validators.min(0)]],
-      stock: [this.product?.stock || 0, [Validators.required, Validators.min(0)]]
+      stock: [this.product?.stock || 0, [Validators.required, Validators.min(0)]],
+      status: [this.product?.status || 'active']
     });
+  }
+
+  onStatusChange(event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.productForm.get('status')?.setValue(isChecked ? 'active' : 'inactive');
+    console.log("status changed");
+    console.log(this.productForm.value);
   }
 
   onSubmit(): void {
     if (this.productForm.valid) {
       const productData = {
         ...this.productForm.value,
-        id: this.product?._id
+        _id: this.product?._id
       };
       this.save.emit(productData);
     }

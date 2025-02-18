@@ -65,7 +65,7 @@ Contains reusable components, directives, and pipes used across different module
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/product-management-frontend.git
+git clone https://github.com/danielvp456/ProductManagementFrontend.git
 cd product-management-frontend
 ```
 2. Install dependencies:
